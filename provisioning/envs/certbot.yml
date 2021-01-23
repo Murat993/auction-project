@@ -1,0 +1,4 @@
+certbot_email: muratnysambaev93@gmail.com
+certbot_hosts:
+  - demo-auction.murat-nysambaev.ru
+  - api.demo-auction.murat-nysambaev.ru
