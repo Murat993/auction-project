@@ -26,6 +26,7 @@ api-composer-install:
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
+	docker-compose run --rm api-php-cli composer cs-check
 
 docker-build:
 	docker-compose build
