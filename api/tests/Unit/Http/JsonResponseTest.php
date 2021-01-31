@@ -10,6 +10,15 @@ use stdClass;
 
 class JsonResponseTest extends TestCase
 {
+    public function testWithCode(): void
+    {
+        $response = new JsonResponse(0, 201);
+
+        self::assertEquals('application/json', $response->getHeaderLine('Content-Type'));
+        self::assertEquals('0', $response->getBody()->getContents());
+        self::assertEquals(201, $response->getStatusCode());
+    }
+
     /**
      * @dataProvider getCases
      * @param mixed $source
@@ -17,10 +26,11 @@ class JsonResponseTest extends TestCase
      */
     public function testResponse($source, $expect): void
     {
-        $response = new JsonResponse($source, 201);
+        $response = new JsonResponse($source);
 
         self::assertEquals('application/json', $response->getHeaderLine('Content-Type'));
         self::assertEquals($expect, $response->getBody()->getContents());
+        self::assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -36,11 +46,11 @@ class JsonResponseTest extends TestCase
         $array = [
             'str' => 'value',
             'int' => 1,
-            'none' => null,
+            'none' => null
         ];
 
         return [
-            'null' => [null, null],
+            'null' => [null, 'null'],
             'empty' => ['', '""'],
             'number' => [12, '12'],
             'string' => ['12', '"12"'],
