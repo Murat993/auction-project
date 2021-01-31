@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Functional;
 
-/**
- * @coversNothing
- */
+
 class NotFoundTest extends WebTestCase
 {
     public function testNotFound(): void
