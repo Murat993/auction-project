@@ -9,10 +9,6 @@ http_response_code(500);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$builder = new DI\ContainerBuilder();
-
-$builder->addDefinitions(require __DIR__ . '/../config/dependencies.php');
-
 /** @var ContainerInterface $container */
 $container = require __DIR__ . '/../config/container.php';
 
