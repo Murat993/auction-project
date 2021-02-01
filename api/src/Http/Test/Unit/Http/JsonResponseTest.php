@@ -13,6 +13,8 @@ class JsonResponseTest extends TestCase
 {
     public function testWithCode(): void
     {
+
+
         $response = new JsonResponse(0, 201);
 
         self::assertEquals('application/json', $response->getHeaderLine('Content-Type'));
