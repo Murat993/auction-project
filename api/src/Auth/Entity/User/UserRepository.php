@@ -13,6 +13,7 @@ interface UserRepository
     public function findByPasswordResetToken(string $token): ?User;
     public function findByNewEmailToken(string $token): ?User;
     public function hasByNetwork(NetworkIdentity $identity): bool;
+    public function remove(User $user): void;
     /**
      * @param Id $id
      * @return User
