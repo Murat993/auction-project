@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
-
+use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,30 +15,30 @@ class Network
     /**
      * @ORM\Column(type="string", length=16)
      */
-    private string $network;
+    private string $name;
     /**
      * @ORM\Column(type="string", length=16)
      */
     private string $identity;
 
-    public function __construct(string $network, string $identity)
+    public function __construct(string $name, string $identity)
     {
-        Assert::notEmpty($network);
+        Assert::notEmpty($name);
         Assert::notEmpty($identity);
-        $this->network = mb_strtolower($network);
+        $this->name = mb_strtolower($name);
         $this->identity = mb_strtolower($identity);
     }
 
     public function isEqualTo(self $network): bool
     {
         return
-            $this->getNetwork() === $network->getNetwork() &&
+            $this->getName() === $network->getName() &&
             $this->getIdentity() === $network->getIdentity();
     }
 
-    public function getNetwork(): string
+    public function getName(): string
     {
-        return $this->network;
+        return $this->name;
     }
 
     public function getIdentity(): string
