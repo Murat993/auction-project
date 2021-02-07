@@ -34,13 +34,22 @@ class User
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $passwordHash = null;
+    /**
+     * @ORM\Embedded(class="Token")
+     */
     private ?Token $joinConfirmToken = null;
     /**
      * @ORM\Column(type="auth_user_status", length=16)
      */
     private Status $status;
     private ArrayObject $networks;
+    /**
+     * @ORM\Embedded(class="Token")
+     */
     private ?Token $passwordResetToken = null;
+    /**
+     * @ORM\Embedded(class="Token")
+     */
     private ?Token $newEmailToken = null;
     /**
      * @ORM\Column(type="auth_user_email", nullable=true)
