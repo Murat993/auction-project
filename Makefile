@@ -27,7 +27,7 @@ docker-pull:
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/*'
 
-api-init: api-composer-install api-permissions
+api-init: api-permissions api-composer-install
 
 api-permissions:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
