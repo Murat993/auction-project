@@ -18,8 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     private Id $id;
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $date;
     private Email $email;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     private ?string $passwordHash = null;
     private ?Token $joinConfirmToken = null;
     private Status $status;
