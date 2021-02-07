@@ -6,6 +6,7 @@ namespace App\Auth\Test\Unit\Entity\User;
 
 
 use App\Auth\Entity\User\Status;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,6 +20,12 @@ class StatusTest extends TestCase
 
         $this->assertTrue($status->isActive());
         $this->assertFalse($status->isWait());
+    }
+
+    public function testIncorrect(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Status('none');
     }
 
     public function testWait(): void
