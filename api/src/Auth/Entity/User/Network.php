@@ -7,9 +7,18 @@ namespace App\Auth\Entity\User;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @ORM\Embeddable
+ */
 class Network
 {
+    /**
+     * @ORM\Column(type="string", length=16)
+     */
     private string $network;
+    /**
+     * @ORM\Column(type="string", length=16)
+     */
     private string $identity;
 
     public function __construct(string $network, string $identity)

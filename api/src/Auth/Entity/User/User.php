@@ -45,6 +45,9 @@ class User
      * @ORM\Column(type="auth_user_status", length=16)
      */
     private Status $status;
+    /**
+     * @ORM\OneToMany(targetEntity="UserNetwork", mappedBy="user", cascade={"all"}, orphanRemoval=true)
+     */
     private Collection $networks;
     /**
      * @ORM\Embedded(class="Token")
@@ -95,7 +98,7 @@ class User
     ): self
     {
         $user = new self($id, $date, $email, Status::active());
-        $user->networks->add($identity);
+        $user->networks->add(new UserNetwork($user, $identity));
         return $user;
     }
 
@@ -109,15 +112,15 @@ class User
         $this->joinConfirmToken = null;
     }
 
-    public function attachNetwork(Network $identity): void
+    public function attachNetwork(Network $network): void
     {
-        /** @var Network $existing */
+        /** @var UserNetwork $existing */
         foreach ($this->networks as $existing) {
-            if ($existing->isEqualTo($identity)) {
+            if ($existing->getNetwork()->isEqualTo($network)) {
                 throw new DomainException('Network is already attached.');
             }
         }
-        $this->networks->add($identity);
+        $this->networks->add(new UserNetwork($this, $network));
     }
 
     public function requestPasswordReset(Token $token, DateTimeImmutable $date): void
@@ -252,7 +255,9 @@ class User
     public function getNetworks(): array
     {
         /** @var Network[] */
-        return $this->networks->toArray();
+        return $this->networks->map(static function (UserNetwork $network) {
+            return $network->getNetwork();
+        })->toArray();
     }
 
     /**
