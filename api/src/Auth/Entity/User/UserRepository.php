@@ -10,13 +10,11 @@ use DomainException;
 
 class UserRepository
 {
-    private EntityRepository $repo;
     private EntityManagerInterface $em;
+    private EntityRepository $repo;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, EntityRepository $repo)
     {
-        /** @var EntityRepository $repo */
-        $repo = $em->getRepository(User::class);
         $this->repo = $repo;
         $this->em = $em;
     }
