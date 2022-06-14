@@ -2,9 +2,10 @@ init: docker-down-clear api-clear docker-pull docker-build docker-up api-init
 up: docker-up
 down: docker-down
 restart: down up
-check: lint analyze test
+check: lint analyze validate-schema test
 lint: api-lint
 analyze: api-analyze
+validate-schema: api-validate-schema
 test: api-test
 test-coverage: api-test-coverage
 test-unit: api-test-unit
@@ -24,6 +25,9 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
+docker-build:
+	docker-compose build
+
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/*'
 
@@ -36,7 +40,10 @@ api-composer-install:
 	docker-compose run --rm api-php-cli composer install
 
 api-migrations:
-    docker-compose run --rm api-php-cli composer app migrations:migrate
+	docker-compose run --rm api-php-cli composer app migrations:migrate
+
+api-validate-schema:
+	docker-compose run --rm api-php-cli composer app orm:validate-schema
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
@@ -63,9 +70,6 @@ api-test-functional:
 api-test-functional-coverage:
 	docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=functional
 
-docker-build:
-	docker-compose build
-
 build: build-gateway build-frontend build-api
 
 build-gateway:
@@ -75,9 +79,9 @@ build-frontend:
 	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-frontend:${IMAGE_TAG} frontend
 
 build-api:
+	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
 	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG} api
 	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/auction-api-php-cli:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
@@ -93,6 +97,7 @@ push-frontend:
 push-api:
 	docker push ${REGISTRY}/auction-api:${IMAGE_TAG}
 	docker push ${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/auction-api-php-cli:${IMAGE_TAG}
 
 deploy:
 	ssh ${HOST} -p ${PORT} 'rm -rf site_${BUILD_NUMBER}'
@@ -102,13 +107,13 @@ deploy:
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "REGISTRY=${REGISTRY}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "IMAGE_TAG=${IMAGE_TAG}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "API_DB_PASSWORD=${API_DB_PASSWORD}" >> .env'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose -f docker-compose.yml pull'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose -f docker-compose.yml up --build --remove-orphans -d'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose pull'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build --remove-orphans -d'
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
 
 rollback:
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose -f docker-compose.yml pull'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose -f docker-compose.yml up --build --remove-orphans -d'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose pull'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build --remove-orphans -d'
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
