@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
       - "8079:8079"
-      - "8078:8082"
+      - "8078:8078"
     depends_on:
       - frontend
       - api
@@ -45,6 +45,7 @@ services:
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tc
+      MAILER_FROM_EMAIL: mail@app.test
     volumes:
       - ./api:/app
 
@@ -64,6 +65,7 @@ services:
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tc
+      MAILER_FROM_EMAIL: mail@app.test
     volumes:
       - ./api:/app
 
