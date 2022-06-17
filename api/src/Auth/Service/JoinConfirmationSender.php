@@ -29,9 +29,9 @@ class JoinConfirmationSender
     {
         $message = (new Swift_Message('Join Confirmation'))
             ->setTo($email->getValue())
-            ->setBody($this->twig->render(['auth/join/confirm.html.twig', [
-                'url' => $this->frontend->generate('/join/confirm', ['token' => $token->getValue()]),
-            ]]), 'text/html');
+            ->setBody($this->twig->render('auth/join/confirm.html.twig', [
+                'url' => $this->frontend->generate('join/confirm', ['token' => $token->getValue()]),
+            ]), 'text/html');
 
         if ($this->mailer->send($message) === 0) {
             throw new RuntimeException('Unable to send email.');
