@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\ErrorHandler\LogErrorHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Middleware\ErrorMiddleware;
 
@@ -28,7 +29,7 @@ return [
             true
         );
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger = $container->get(LoggerInterface::class);
 
         $middleware->setDefaultErrorHandler(
