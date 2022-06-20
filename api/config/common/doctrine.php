@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use App\Auth;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\Common\EventManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Psr\Container\ContainerInterface;
@@ -31,14 +33,15 @@ return [
          */
         $settings = $container->get('config')['doctrine'];
 
-        $config = Setup::createAnnotationMetadataConfiguration(
-            $settings['metadata_dirs'],
+        $config = Setup::createConfiguration(
             $settings['dev_mode'],
             $settings['proxy_dir'],
             $settings['cache_dir'] ?
                 DoctrineProvider::wrap(new FilesystemAdapter('', 0, $settings['cache_dir'])) :
                 DoctrineProvider::wrap(new ArrayAdapter())
         );
+
+        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader(), $settings['metadata_dirs']));
 
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
