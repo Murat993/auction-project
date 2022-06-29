@@ -11,12 +11,21 @@ services:
     depends_on:
       - frontend
       - api
+      - mailer
 
   frontend:
     build:
       context: frontend/docker/development/nginx
+    depends_on:
+      - frontend-node
+
+  frontend-node:
+    build:
+      context: frontend/docker/development/node
     volumes:
       - ./frontend:/app
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn start"
+    tty: true
 
   frontend-node-cli:
     build:
@@ -40,7 +49,7 @@ services:
     environment:
       APP_ENV: dev
       APP_DEBUG: 1
-      HP_IDE_CONFIG: serverName=API
+      PHP_IDE_CONFIG: serverName=API
       DB_HOST: api-postgres
       DB_USER: app
       DB_PASSWORD: secret
@@ -87,7 +96,7 @@ services:
     volumes:
       - api-postgres:/var/lib/postgresql/data
     ports:
-      - "54321:5432"
+      - "54322:5432"
 
   mailer:
     image: mailhog/mailhog

@@ -46,7 +46,7 @@ api-wait-db:
 	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
 
 api-migrations:
-	docker-compose run --rm api-php-cli composer app migrations:migrate
+	docker-compose run --rm api-php-cli composer app migrations:migrate --no-interaction
 
 api-fixtures:
 	docker-compose run --rm api-php-cli composer app fixtures:load
@@ -80,12 +80,15 @@ api-test-functional-coverage:
 	docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=functional
 
 frontend-clear:
-	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf build'
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
 
-frontend-init: frontend-yarn-install
+frontend-init: frontend-yarn-install frontend-ready
 
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
+
+frontend-ready:
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
 
 build: build-gateway build-frontend build-api
 
