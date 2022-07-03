@@ -10,11 +10,8 @@ lint: api-lint frontend-lint
 analyze: api-analyze
 validate-schema: api-validate-schema
 test: api-test api-fixtures frontend-test
-test-coverage: api-test-coverage
 test-unit: api-test-unit
-test-unit-coverage: api-test-unit-coverage
 test-functional: api-test-functional api-fixtures
-test-functional-coverage: api-test-functional-coverage api-fixtures
 
 docker-up:
 	docker-compose up -d
@@ -46,7 +43,7 @@ api-wait-db:
 	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
 
 api-migrations:
-	docker-compose run --rm api-php-cli composer app migrations:migrate --no-interaction
+	docker-compose run --rm api-php-cli composer app migrations:migrate
 
 api-fixtures:
 	docker-compose run --rm api-php-cli composer app fixtures:load
