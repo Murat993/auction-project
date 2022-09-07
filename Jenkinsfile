@@ -63,6 +63,11 @@ pipeline {
             }
         }
     }
+    stage("Build") {
+        steps {
+            sh "make build"
+        }
+    }
     post {
         always {
             sh "make docker-down-clear || true"
