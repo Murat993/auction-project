@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \App\Auth\Entity\User\Network
  */
-class NetworkIdentityTest extends TestCase
+class NetworkTest extends TestCase
 {
     public function testSuccess(): void
     {

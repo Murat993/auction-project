@@ -10,7 +10,7 @@ use DateInterval;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Tokenizer
+ * @covers \App\Auth\Service\Tokenizer
  */
 class TokenizerTest extends TestCase
 {
