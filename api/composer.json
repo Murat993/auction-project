@@ -34,7 +34,7 @@
     "dms/phpunit-arraysubset-asserts": "^0.2.0",
     "doctrine/data-fixtures": "^1.4",
     "guzzlehttp/guzzle": "^6.5",
-    "overtrue/phplint": "^1.2",
+    "overtrue/phplint": "^2.0",
     "phpunit/phpunit": "^9.2",
     "squizlabs/php_codesniffer": "^3.5",
     "roave/security-advisories": "dev-master",
