@@ -1,3 +1,3 @@
-const { Given } = require('cucumber')
+const { Given } = ('@cucumber/cucumber')
 
 Given('I am a guest user', function () {})

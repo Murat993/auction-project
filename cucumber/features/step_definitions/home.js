@@ -1,4 +1,4 @@
-const { Then } = require('cucumber');
+const { Then } = ('@cucumber/cucumber');
 const { expect } = require('chai')
 
 Then('I see welcome block', async function () {
