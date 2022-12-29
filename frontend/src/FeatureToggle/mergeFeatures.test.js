@@ -4,11 +4,12 @@ test('merges features structs and arrays', () => {
   const features1 = {
     first: true,
     second: false,
-    third: false,
+    third: true,
     fourth: false,
+    fifth: true,
   }
 
-  const features2 = ['second']
+  const features2 = ['second', '!third']
 
   const features3 = {
     fourth: true,
