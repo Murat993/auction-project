@@ -3,8 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import cookie from 'cookie'
 
-const features = []
+const defaultFeatures = []
+
+const cookies = cookie.parse(document.cookie)
+const cookieFeatures = (cookies.features || '').split(/\s*,\s*/g)
+
+const features = [...defaultFeatures, ...cookieFeatures]
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
