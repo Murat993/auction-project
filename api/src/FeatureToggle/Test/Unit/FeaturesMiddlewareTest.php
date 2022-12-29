@@ -23,6 +23,7 @@ class FeaturesMiddlewareTest extends TestCase
     {
         $switch = $this->createMock(FeatureSwitch::class);
         $switch->expects(self::never())->method('enable');
+        $switch->expects(self::never())->method('disable');
 
         $middleware = new FeaturesMiddleware($switch, 'X-Features');
 
@@ -43,7 +44,7 @@ class FeaturesMiddlewareTest extends TestCase
 
         $middleware = new FeaturesMiddleware($switch, 'X-Features');
 
-        $request = self::createRequest()->withHeader('X-Features', 'ONE, TWO');
+        $request = self::createRequest()->withHeader('X-Features', 'ONE, TWO, !THREE');
 
         $handler = $this->createStub(RequestHandlerInterface::class);
         $handler->method('handle')->willReturn($source = self::createResponse());
@@ -51,6 +52,21 @@ class FeaturesMiddlewareTest extends TestCase
         $response = $middleware->process($request, $handler);
 
         self::assertSame($source, $response);
+    }
+
+    public function testDisable(): void
+    {
+        $features = new Features([
+            'FIRST' => false,
+            'SECOND' => true,
+        ]);
+
+        $features->disable('SECOND');
+        $features->disable('THIRD');
+
+        self::assertFalse($features->isEnabled('FIRST'));
+        self::assertFalse($features->isEnabled('SECOND'));
+        self::assertFalse($features->isEnabled('THIRD'));
     }
 
     private static function createResponse(): ResponseInterface
