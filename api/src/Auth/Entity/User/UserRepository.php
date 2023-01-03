@@ -11,8 +11,7 @@ use DomainException;
 class UserRepository
 {
     /**
-     * @var EntityRepository
-     * @psalm-var EntityRepository<User>
+     * @var EntityRepository<User>
      */
     private EntityRepository $repo;
     private EntityManagerInterface $em;
@@ -20,7 +19,6 @@ class UserRepository
     /**
      * @param EntityManagerInterface $em
      * @param EntityRepository $repo
-     * @psalm-param EntityRepository<User> $repo
      */
     public function __construct(EntityManagerInterface $em, EntityRepository $repo)
     {
@@ -75,7 +73,7 @@ class UserRepository
      */
     public function findByNewEmailToken(string $token): ?User
     {
-        /** @psalm-var User|null */
+        /** @var User|null */
         return $this->repo->findOneBy(['newEmailToken.value' => $token]);
     }
 
