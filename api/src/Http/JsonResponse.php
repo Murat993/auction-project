@@ -14,7 +14,7 @@ class JsonResponse extends Response
      * @param mixed $data
      * @param int $status
      */
-    public function __construct($data, int $status = 200)
+    public function __construct(mixed $data, int $status = 200)
     {
         parent::__construct(
             $status,
