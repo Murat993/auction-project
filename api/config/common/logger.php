@@ -35,7 +35,7 @@ return [
         }
 
 
-        foreach ($config['processors'] as $key => $class) {
+        foreach ($config['processors'] as $class) {
             /** @var ProcessorInterface $processor */
             $processor = $container->get($class);
             $log->pushProcessor($processor);
