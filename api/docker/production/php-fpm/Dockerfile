@@ -1,4 +1,4 @@
-FROM php:7.4-cli-alpine AS builder
+FROM php:8.0-cli-alpine AS builder
 
 RUN apk add --no-cache postgresql-dev fcgi \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -19,7 +19,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --fil
 
 ### FPM ###
 
-FROM php:7.4-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 RUN apk add --no-cache postgresql-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \

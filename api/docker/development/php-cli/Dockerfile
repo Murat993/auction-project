@@ -1,11 +1,6 @@
-FROM php:7.4-cli-alpine
+FROM php:8.0-cli-alpine
 
 ENV XDEBUG_VERSION 3.0.3
-
-RUN apk add --no-cache autoconf g++ make \
-    && pecl install xdebug-$XDEBUG_VERSION \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable xdebug
 
 RUN apk add --no-cache postgresql-dev bash coreutils git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
