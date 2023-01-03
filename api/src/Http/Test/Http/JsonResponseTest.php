@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Test\Unit;
+namespace App\Http\Test;
 
 use App\Http\JsonResponse;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,8 @@ class JsonResponseTest extends TestCase
     }
 
     /**
-     * @return iterable<array-key, array<array-key, mixed>>
+     * @return iterable
+     * @psalm-return iterable<array-key, array<array-key, mixed>>
      */
     public function getCases(): iterable
     {
