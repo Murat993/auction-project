@@ -1,14 +1,14 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Join from './Join'
 import { MemoryRouter } from 'react-router-dom'
 
 test('renders join page', () => {
-  const { getByText } = render(
+  render(
     <MemoryRouter>
       <Join />
     </MemoryRouter>
   )
 
-  expect(getByText(/Join to Us/i)).toBeInTheDocument()
+  expect(screen.getByTestId('join-form')).toBeInTheDocument()
 })
