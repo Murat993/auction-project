@@ -8,7 +8,10 @@ use App\FeatureToggle\FeaturesContext;
 use App\FeatureToggle\FeaturesMonologProcessor;
 use PHPUnit\Framework\TestCase;
 
-class FeatureMonologProcessorTest extends TestCase
+/**
+ * @internal
+ */
+final class FeatureMonologProcessorTest extends TestCase
 {
     public function testProcess(): void
     {
@@ -18,13 +21,13 @@ class FeatureMonologProcessorTest extends TestCase
         $processor = new FeaturesMonologProcessor($context);
 
         $result = $processor([
-            'message' => 'Message'
+            'message' => 'Message',
         ]);
 
         self::assertEquals([
             'message' => 'Message',
             'extra' => [
-                'features' => $source
+                'features' => $source,
             ],
         ], $result);
     }

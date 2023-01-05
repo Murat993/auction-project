@@ -9,8 +9,9 @@ use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use stdClass;
 
-class HomeAction implements RequestHandlerInterface
+final class HomeAction implements RequestHandlerInterface
 {
     private FeatureFlag $flag;
 
@@ -24,6 +25,6 @@ class HomeAction implements RequestHandlerInterface
         if ($this->flag->isEnabled('NEW_HOME')) {
             return new JsonResponse(['name' => 'API']);
         }
-        return new JsonResponse(new \stdClass());
+        return new JsonResponse(new stdClass());
     }
 }

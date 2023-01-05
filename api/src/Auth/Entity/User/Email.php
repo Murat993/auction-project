@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
-
 use Webmozart\Assert\Assert;
 
-class Email
+final class Email
 {
     private string $value;
 
@@ -26,10 +25,5 @@ class Email
     public function getValue(): string
     {
         return $this->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getValue();
     }
 }

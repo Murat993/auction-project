@@ -16,8 +16,10 @@ use Slim\Psr7\Factory\UploadedFileFactory;
 
 /**
  * @covers \App\Http\Middleware\ClearEmptyInput
+ *
+ * @internal
  */
-class ClearEmptyInputTest extends TestCase
+final class ClearEmptyInputTest extends TestCase
 {
     public function testParsedBody(): void
     {
@@ -32,7 +34,7 @@ class ClearEmptyInputTest extends TestCase
                     'null' => null,
                     'space' => ' ',
                     'name' => ' Name',
-                ]
+                ],
             ]);
 
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -46,7 +48,7 @@ class ClearEmptyInputTest extends TestCase
                         'null' => null,
                         'space' => '',
                         'name' => 'Name',
-                    ]
+                    ],
                 ], $request->getParsedBody());
                 return (new ResponseFactory())->createResponse();
             });

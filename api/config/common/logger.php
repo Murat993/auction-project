@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 return [
-    LoggerInterface::class => function (ContainerInterface $container) {
+    LoggerInterface::class => static function (ContainerInterface $container) {
         /**
          * @psalm-suppress MixedArrayAccess
          * @var array{
@@ -34,7 +34,6 @@ return [
             $log->pushHandler(new StreamHandler($config['file'], $level));
         }
 
-
         foreach ($config['processors'] as $class) {
             /** @var ProcessorInterface $processor */
             $processor = $container->get($class);
@@ -50,7 +49,7 @@ return [
             'file' => null,
             'stderr' => true,
             'processors' => [
-                FeaturesMonologProcessor::class
+                FeaturesMonologProcessor::class,
             ],
         ],
     ],

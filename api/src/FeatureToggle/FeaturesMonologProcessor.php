@@ -6,7 +6,7 @@ namespace App\FeatureToggle;
 
 use Monolog\Processor\ProcessorInterface;
 
-class FeaturesMonologProcessor implements ProcessorInterface
+final class FeaturesMonologProcessor implements ProcessorInterface
 {
     private FeaturesContext $context;
 
@@ -19,8 +19,8 @@ class FeaturesMonologProcessor implements ProcessorInterface
     {
         return array_merge_recursive($record, [
             'extra' => [
-                'features' => $this->context->getAllEnabled()
-            ]
+                'features' => $this->context->getAllEnabled(),
+            ],
         ]);
     }
 }

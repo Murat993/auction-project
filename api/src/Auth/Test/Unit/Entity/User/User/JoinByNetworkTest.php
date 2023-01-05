@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User\User;
 
-use App\Auth\Entity\User\Network;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Network;
 use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\User;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Auth\Entity\User\User
+ *
+ * @internal
  */
-class JoinByNetworkTest extends TestCase
+final class JoinByNetworkTest extends TestCase
 {
     public function testSuccess(): void
     {
         $user = User::joinByNetwork(
             $id = Id::generate(),
-            $date = new \DateTimeImmutable(),
+            $date = new DateTimeImmutable(),
             $email = new Email('email@app.test'),
             $network = new Network('vk', '0000001')
         );
@@ -31,6 +34,7 @@ class JoinByNetworkTest extends TestCase
 
         self::assertFalse($user->isWait());
         self::assertTrue($user->isActive());
+
         self::assertEquals(Role::USER, $user->getRole()->getName());
 
         self::assertCount(1, $networks = $user->getNetworks());

@@ -1,6 +1,6 @@
 FROM php:8.0-fpm-alpine
 
-ENV XDEBUG_VERSION 3.0.4
+ENV XDEBUG_VERSION 3.0.3
 
 RUN apk add --no-cache postgresql-dev fcgi git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -11,9 +11,9 @@ RUN apk add --no-cache postgresql-dev fcgi git \
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
-COPY ./development/php/conf.d /usr/local/etc/php/conf.d
-COPY ./common/php/php-fpm.d /usr/local/etc/php-fpm.d
 COPY ./common/php/conf.d /usr/local/etc/php/conf.d
+COPY ./common/php/php-fpm.d /usr/local/etc/php-fpm.d
+COPY ./development/php/conf.d /usr/local/etc/php/conf.d
 COPY ./development/php-fpm/conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /app

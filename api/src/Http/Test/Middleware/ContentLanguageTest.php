@@ -14,8 +14,10 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 /**
  * @covers \Middlewares\ContentLanguage
+ *
+ * @internal
  */
-class ContentLanguageTest extends TestCase
+final class ContentLanguageTest extends TestCase
 {
     public function testDefault(): void
     {
@@ -51,13 +53,13 @@ class ContentLanguageTest extends TestCase
 
     public function testMulti(): void
     {
-        $middleware = new ContentLanguage(['en', 'fr', 'ru']);
+        $middleware = new ContentLanguage(['en', 'ru']);
 
         $handler = $this->createStub(RequestHandlerInterface::class);
         $handler->method('handle')->willReturnCallback(
             static function (ServerRequestInterface $request): ResponseInterface {
                 self::assertEquals('ru', $request->getHeaderLine('Accept-Language'));
-                return  (new ResponseFactory())->createResponse();
+                return (new ResponseFactory())->createResponse();
             }
         );
 

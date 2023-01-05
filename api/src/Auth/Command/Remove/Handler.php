@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Auth\Command\Remove;
 
-use App\Flusher;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
+use App\Flusher;
 
-class Handler
+final class Handler
 {
     private UserRepository $users;
     private Flusher $flusher;

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
-
 use Webmozart\Assert\Assert;
 
-class Status
+final class Status
 {
     public const WAIT = 'wait';
     public const ACTIVE = 'active';
@@ -28,14 +27,14 @@ class Status
         return new self(self::WAIT);
     }
 
-    public static function  active(): self
+    public static function active(): self
     {
         return new self(self::ACTIVE);
     }
 
     public function isWait(): bool
     {
-        return $this->name === Status::WAIT;
+        return $this->name === self::WAIT;
     }
 
     public function isActive(): bool
@@ -46,10 +45,5 @@ class Status
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
     }
 }

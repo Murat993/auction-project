@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User;
 
-
 use App\Auth\Entity\User\Email;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Auth\Entity\User\Email
+ *
+ * @internal
  */
-class EmailTest extends TestCase
+final class EmailTest extends TestCase
 {
     public function testSuccess(): void
     {
         $email = new Email($value = 'email@app.test');
-        $this->assertEquals($value, $email->getValue());
+
+        self::assertEquals($value, $email->getValue());
     }
 
     public function testCase(): void
     {
         $email = new Email('EmAil@app.test');
-        $this->assertEquals('email@app.test', $email->getValue());
+
+        self::assertEquals('email@app.test', $email->getValue());
     }
 
     public function testIncorrect(): void

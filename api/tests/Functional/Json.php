@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Test\Functional;
 
-class Json
+final class Json
 {
-    /**
-     * @param string $data
-     * @return array
-     */
     public static function decode(string $data): array
     {
         /** @var array */

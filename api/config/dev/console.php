@@ -26,7 +26,6 @@ return [
         'console' => [
             'commands' => [
                 FixturesLoadCommand::class,
-                \App\Console\MailerCheckCommand::class,
 
                 SchemaTool\DropCommand::class,
 

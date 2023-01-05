@@ -7,7 +7,7 @@ namespace App\Auth\Service;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 
-class PasswordHasher
+final class PasswordHasher
 {
     private int $memoryCost;
 
@@ -19,7 +19,6 @@ class PasswordHasher
     public function hash(string $password): string
     {
         Assert::notEmpty($password);
-        /** @var string|false|null $hash */
         $hash = password_hash($password, PASSWORD_ARGON2I, ['memory_cost' => $this->memoryCost]);
         if ($hash === null) {
             throw new RuntimeException('Unable to generate hash.');

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Test\Functional;
 
-
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
-class NotFoundTest extends WebTestCase
+/**
+ * @internal
+ */
+final class NotFoundTest extends WebTestCase
 {
     use ArraySubsetAsserts;
 
@@ -18,7 +20,6 @@ class NotFoundTest extends WebTestCase
         self::assertEquals(404, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
 
-        /** @var array $data */
         $data = Json::decode($body);
 
         self::assertArraySubset([

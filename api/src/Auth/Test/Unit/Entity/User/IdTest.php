@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User;
 
-
 use App\Auth\Entity\User\Id;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -12,26 +11,32 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @covers \App\Auth\Entity\User\Id
+ *
+ * @internal
  */
-class IdTest extends TestCase
+final class IdTest extends TestCase
 {
     public function testSuccess(): void
     {
         $id = new Id($value = Uuid::uuid4()->toString());
-        $this->assertEquals($value, $id->getValue());
+
+        self::assertEquals($value, $id->getValue());
     }
 
     public function testCase(): void
     {
         $value = Uuid::uuid4()->toString();
+
         $id = new Id(mb_strtoupper($value));
-        $this->assertEquals($value, $id->getValue());
+
+        self::assertEquals($value, $id->getValue());
     }
 
     public function testGenerate(): void
     {
         $id = Id::generate();
-        $this->assertNotEmpty($id->getValue());
+
+        self::assertNotEmpty($id->getValue());
     }
 
     public function testIncorrect(): void

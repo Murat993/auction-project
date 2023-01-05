@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
-
 use App\Auth\Service\PasswordHasher;
-use ArrayObject;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use DomainException;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 /**
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="auth_users")
  */
 class User
 {
     /**
      * @ORM\Column(type="auth_user_id")
-     * @ORM\Id()
+     * @ORM\Id
      */
     private Id $id;
     /**
@@ -38,34 +36,34 @@ class User
      */
     private ?string $passwordHash = null;
     /**
-     * @ORM\Embedded(class="Token")
-     */
-    private ?Token $joinConfirmToken = null;
-    /**
      * @ORM\Column(type="auth_user_status", length=16)
      */
     private Status $status;
     /**
-     * @var Collection<array-key,UserNetwork>
-     * @ORM\OneToMany(targetEntity="UserNetwork", mappedBy="user", cascade={"all"}, orphanRemoval=true)
+     * @ORM\Embedded(class="Token")
      */
-    private Collection $networks;
+    private ?Token $joinConfirmToken = null;
     /**
      * @ORM\Embedded(class="Token")
      */
     private ?Token $passwordResetToken = null;
     /**
-     * @ORM\Embedded(class="Token")
-     */
-    private ?Token $newEmailToken = null;
-    /**
      * @ORM\Column(type="auth_user_email", nullable=true)
      */
     private ?Email $newEmail = null;
     /**
+     * @ORM\Embedded(class="Token")
+     */
+    private ?Token $newEmailToken = null;
+    /**
      * @ORM\Column(type="auth_user_role", length=16)
      */
     private Role $role;
+    /**
+     * @var Collection<array-key,UserNetwork>
+     * @ORM\OneToMany(targetEntity="UserNetwork", mappedBy="user", cascade={"all"}, orphanRemoval=true)
+     */
+    private Collection $networks;
 
     private function __construct(Id $id, DateTimeImmutable $date, Email $email, Status $status)
     {
@@ -77,29 +75,27 @@ class User
         $this->networks = new ArrayCollection();
     }
 
+    public static function joinByNetwork(
+        Id $id,
+        DateTimeImmutable $date,
+        Email $email,
+        Network $network
+    ): self {
+        $user = new self($id, $date, $email, Status::active());
+        $user->networks->add(new UserNetwork($user, $network));
+        return $user;
+    }
+
     public static function requestJoinByEmail(
         Id $id,
         DateTimeImmutable $date,
         Email $email,
         string $passwordHash,
         Token $token
-    ): self
-    {
+    ): self {
         $user = new self($id, $date, $email, Status::wait());
         $user->passwordHash = $passwordHash;
         $user->joinConfirmToken = $token;
-        return $user;
-    }
-
-    public static function joinByNetwork(
-        Id $id,
-        DateTimeImmutable $date,
-        Email $email,
-        Network $identity
-    ): self
-    {
-        $user = new self($id, $date, $email, Status::active());
-        $user->networks->add(new UserNetwork($user, $identity));
         return $user;
     }
 
@@ -115,7 +111,6 @@ class User
 
     public function attachNetwork(Network $network): void
     {
-        /** @var UserNetwork $existing */
         foreach ($this->networks as $existing) {
             if ($existing->getNetwork()->isEqualTo($network)) {
                 throw new DomainException('Network is already attached.');
@@ -144,7 +139,6 @@ class User
         $this->passwordResetToken = null;
         $this->passwordHash = $hash;
     }
-
 
     public function changePassword(string $current, string $new, PasswordHasher $hasher): void
     {
@@ -220,6 +214,11 @@ class User
         return $this->email;
     }
 
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
     public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
@@ -245,24 +244,17 @@ class User
         return $this->newEmailToken;
     }
 
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
     /**
      * @return Network[]
      */
     public function getNetworks(): array
     {
         /** @var Network[] */
-        return $this->networks->map(static function (UserNetwork $network) {
-            return $network->getNetwork();
-        })->toArray();
+        return $this->networks->map(static fn (UserNetwork $network) => $network->getNetwork())->toArray();
     }
 
     /**
-     * @ORM\PostLoad()
+     * @ORM\PostLoad
      */
     public function checkEmbeds(): void
     {

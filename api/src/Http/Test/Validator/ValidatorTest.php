@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @covers \App\Http\Validator\Validator
+ *
+ * @internal
  */
-class ValidatorTest extends TestCase
+final class ValidatorTest extends TestCase
 {
     public function testValid(): void
     {
@@ -50,7 +52,6 @@ class ValidatorTest extends TestCase
             self::fail('Expected exception is not thrown');
         } catch (Exception $exception) {
             self::assertInstanceOf(ValidationException::class, $exception);
-            /** @var ValidationException $exception */
             self::assertEquals($violations, $exception->getViolations());
         }
     }

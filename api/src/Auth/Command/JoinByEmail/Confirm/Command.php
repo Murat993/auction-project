@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Auth\Command\JoinByEmail\Confirm;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Command
+final class Command
 {
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public string $token = '';
 }

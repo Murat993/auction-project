@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\FeatureToggle\FeatureFlagTwigExtension;
 use App\Frontend\FrontendUrlTwigExtension;
 use Psr\Container\ContainerInterface;
@@ -9,7 +11,7 @@ use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 
 return [
-    Environment::class => function (ContainerInterface $container): Environment {
+    Environment::class => static function (ContainerInterface $container): Environment {
         /**
          * @psalm-suppress MixedArrayAccess
          * @var array{

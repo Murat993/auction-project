@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Builder;
 
-use App\Auth\Entity\User\Network;
-use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Network;
+use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
-class UserBuilder
+final class UserBuilder
 {
     private Id $id;
     private Email $email;
@@ -45,10 +45,10 @@ class UserBuilder
         return $clone;
     }
 
-    public function viaNetwork(Network $identity = null): self
+    public function viaNetwork(Network $network = null): self
     {
         $clone = clone $this;
-        $clone->networkIdentity = $identity ?? new Network('vk', '0000001');
+        $clone->networkIdentity = $network ?? new Network('vk', '0000001');
         return $clone;
     }
 

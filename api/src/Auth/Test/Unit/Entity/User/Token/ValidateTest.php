@@ -11,8 +11,10 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @covers \App\Auth\Entity\User\Token::validate
+ *
+ * @internal
  */
-class ValidateTest extends TestCase
+final class ValidateTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions

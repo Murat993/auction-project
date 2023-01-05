@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\FeatureToggle\Test;
 
-use App\FeatureToggle\Features;
 use App\FeatureToggle\FeaturesMiddleware;
 use App\FeatureToggle\FeatureSwitch;
 use PHPUnit\Framework\TestCase;
@@ -16,8 +15,10 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 /**
  * @covers \App\FeatureToggle\FeaturesMiddleware
+ *
+ * @internal
  */
-class FeaturesMiddlewareTest extends TestCase
+final class FeaturesMiddlewareTest extends TestCase
 {
     public function testEmpty(): void
     {
@@ -41,6 +42,7 @@ class FeaturesMiddlewareTest extends TestCase
     {
         $switch = $this->createMock(FeatureSwitch::class);
         $switch->expects(self::exactly(2))->method('enable')->withConsecutive(['ONE'], ['TWO']);
+        $switch->expects(self::once())->method('disable')->withConsecutive(['THREE']);
 
         $middleware = new FeaturesMiddleware($switch, 'X-Features');
 
@@ -52,21 +54,6 @@ class FeaturesMiddlewareTest extends TestCase
         $response = $middleware->process($request, $handler);
 
         self::assertSame($source, $response);
-    }
-
-    public function testDisable(): void
-    {
-        $features = new Features([
-            'FIRST' => false,
-            'SECOND' => true,
-        ]);
-
-        $features->disable('SECOND');
-        $features->disable('THIRD');
-
-        self::assertFalse($features->isEnabled('FIRST'));
-        self::assertFalse($features->isEnabled('SECOND'));
-        self::assertFalse($features->isEnabled('THIRD'));
     }
 
     private static function createResponse(): ResponseInterface
