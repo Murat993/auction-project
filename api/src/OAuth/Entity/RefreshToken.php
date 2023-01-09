@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\OAuth\Entity;
 
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
