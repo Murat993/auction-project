@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 services:
   gateway:
     build:
@@ -115,9 +115,9 @@ services:
 
 secrets:
   jwt_public_key:
-    file: ./docker/development/secrets/jwt_public.key
+    file: ./docker/development/secrets/jwt_public_key
   jwt_private_key:
-    file: ./docker/development/secrets/jwt_private.key
+    file: ./docker/development/secrets/jwt_private_key
 
 volumes:
   api-postgres:

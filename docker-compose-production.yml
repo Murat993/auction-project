@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 services:
   swarm-cronjob:
     image: crazymax/swarm-cronjob:latest
@@ -55,7 +55,7 @@ services:
       DB_NAME: app
       MAILER_HOST: ${API_MAILER_HOST}
       MAILER_PORT: ${API_MAILER_PORT}
-      MAILER_USER: ${API_MAILER_USER}
+      MAILER_USER: ${API_MAILER_USERNAME}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
@@ -85,7 +85,7 @@ services:
       DB_NAME: app
       MAILER_HOST: ${API_MAILER_HOST}
       MAILER_PORT: ${API_MAILER_PORT}
-      MAILER_USER: ${API_MAILER_USER}
+      MAILER_USER: ${API_MAILER_USERNAME}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
@@ -115,7 +115,7 @@ services:
       DB_NAME: app
       MAILER_HOST: ${API_MAILER_HOST}
       MAILER_PORT: ${API_MAILER_PORT}
-      MAILER_USER: ${API_MAILER_USER}
+      MAILER_USER: ${API_MAILER_USERNAME}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
@@ -152,9 +152,9 @@ services:
 
 secrets:
   jwt_public_key:
-    file: ./secrets/jwt_public.key
+    file: ./secrets/jwt_public_key
   jwt_private_key:
-    file: ./secrets/jwt_private.key
+    file: ./secrets/jwt_private_key
 
 volumes:
   api-postgres:
