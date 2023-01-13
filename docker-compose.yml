@@ -19,6 +19,17 @@ services:
   frontend:
     build:
       context: frontend/docker/development/nginx
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.frontend.rule=Host(`localhost`) || Host(`www.localhost`)
+      - traefik.http.routers.frontend.entryPoints=http
+      - traefik.http.services.frontend.loadBalancer.server.port=80
+      - traefik.http.services.frontend.loadBalancer.server.port=80
+      - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.localhost/(.*)$$
+      - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}localhost/$${2}
+      - traefik.http.middlewares.frontend-redirect.redirectRegex.permanent=true
+      - traefik.http.routers.frontend.middlewares=frontend-redirect
     networks:
       - traefik-public
       - default
@@ -26,12 +37,6 @@ services:
   frontend-node:
     build:
       context: frontend/docker/development/node
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.routers.frontend.rule=Host(`localhost`)
-      - traefik.http.routers.frontend.entryPoints=http
-      - traefik.http.services.frontend.loadBalancer.server.port=80
     environment:
       WDS_SOCKET_PORT: 0
     volumes:
