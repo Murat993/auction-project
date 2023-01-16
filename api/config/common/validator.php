@@ -10,14 +10,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 return [
     ValidatorInterface::class => static function (ContainerInterface $container): ValidatorInterface {
-        /** @psalm-suppress DeprecatedMethod */
-        AnnotationRegistry::registerLoader('class_exists');
-
         $translator = $container->get(TranslatorInterface::class);
 
         return Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
-            ->addDefaultDoctrineAnnotationReader()
             ->setTranslator($translator)
             ->setTranslationDomain('validators')
             ->getValidator();
