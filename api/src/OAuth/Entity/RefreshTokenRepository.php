@@ -77,9 +77,9 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     private function exists(string $id): bool
     {
         return $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.identifier)')
-                ->andWhere('t.identifier = :identifier')
-                ->setParameter(':identifier', $id)
-                ->getQuery()->getSingleScalarResult() > 0;
+            ->select('COUNT(t.identifier)')
+            ->andWhere('t.identifier = :identifier')
+            ->setParameter(':identifier', $id)
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 }

@@ -37,7 +37,7 @@ return [
         $transport = (new EsmtpTransport(
             $config['host'],
             $config['port'],
-            $config['encryption'] === 'tls',
+            false,
             $dispatcher,
             $container->get(LoggerInterface::class)
         ))
@@ -51,9 +51,8 @@ return [
         'mailer' => [
             'host' => env('MAILER_HOST'),
             'port' => (int)env('MAILER_PORT'),
-            'user' => env('MAILER_USER'),
+            'user' => env('MAILER_USERNAME'),
             'password' => env('MAILER_PASSWORD'),
-            'encryption' => env('MAILER_ENCRYPTION'),
             'from' => [
                 'email' => env('MAILER_FROM_EMAIL'),
                 'name' => 'Auction',

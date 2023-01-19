@@ -26,7 +26,7 @@ final class Authenticate implements MiddlewareInterface
         $this->response = $response;
     }
 
-    public static function identity(ServerRequestInterface $request): Identity
+    public static function identity(ServerRequestInterface $request): ?Identity
     {
         $identity = $request->getAttribute(self::ATTRIBUTE);
 

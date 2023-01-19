@@ -53,7 +53,7 @@ return [
 
     'config' => [
         'twig' => [
-            'debug' => (bool)env('APP_DEBUG'),
+            'debug' => (bool)env('APP_DEBUG', '0'),
             'template_dirs' => [
                 FilesystemLoader::MAIN_NAMESPACE => __DIR__ . '/../../templates',
             ],

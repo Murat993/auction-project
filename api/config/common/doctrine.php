@@ -23,7 +23,7 @@ return [
         /**
          * @psalm-suppress MixedArrayAccess
          * @var array{
-         *     metadata_dirs:array,
+         *     metadata_dirs:string[],
          *     dev_mode:bool,
          *     proxy_dir:string,
          *     cache_dir:?string,

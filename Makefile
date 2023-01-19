@@ -1,7 +1,6 @@
 init: init-ci frontend-ready
 init-ci: docker-down-clear \
 	api-clear frontend-clear cucumber-clear \
-	docker-pull docker-build docker-up \
 	api-init frontend-init cucumber-init
 up: docker-up
 down: docker-down

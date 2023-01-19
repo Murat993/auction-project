@@ -47,7 +47,6 @@ abstract class WebTestCase extends TestCase
         return $request;
     }
 
-
     protected static function request(string $method, string $path): ServerRequestInterface
     {
         return (new ServerRequestFactory())->createServerRequest($method, $path);

@@ -46,7 +46,7 @@ return [
 
     'config' => [
         'logger' => [
-            'debug' => (bool)env('APP_DEBUG'),
+            'debug' => (bool)env('APP_DEBUG', '0'),
             'file' => null,
             'stderr' => true,
             'processors' => [

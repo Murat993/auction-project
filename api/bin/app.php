@@ -12,8 +12,8 @@ use function App\env;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-if (getenv('SENTRY_DSN')) {
-    Sentry\init(['dsn' => getenv('SENTRY_DSN')]);
+if ($dsn = env('SENTRY_DSN')) {
+    Sentry\init(['dsn' => $dsn]);
 }
 
 /** @var ContainerInterface $container */
@@ -21,8 +21,8 @@ $container = require __DIR__ . '/../config/container.php';
 
 $cli = new Application('Console');
 
-if ($dsn = env('SENTRY_DSN')) {
-    Sentry\init(['dsn' => $dsn]);
+if (getenv('SENTRY_DSN')) {
+    $cli->setCatchExceptions(false);
 }
 
 /**

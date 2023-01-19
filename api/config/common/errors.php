@@ -44,7 +44,7 @@ return [
 
     'config' => [
         'errors' => [
-            'display_details' => (bool)env('APP_DEBUG'),
+            'display_details' => (bool)env('APP_DEBUG', '0'),
         ],
     ],
 ];

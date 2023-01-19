@@ -93,7 +93,6 @@ final class AuthorizeTest extends WebTestCase
         self::assertStringContainsString('<title>Вход</title>', $content);
     }
 
-
     public function testInvalidClient(): void
     {
         $response = $this->app()->handle(self::html(

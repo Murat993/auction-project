@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\OAuth\Entity;
 
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'oauth_refresh_tokens')]
-class RefreshToken implements RefreshTokenEntityInterface
+final class RefreshToken implements RefreshTokenEntityInterface
 {
     use EntityTrait;
     use RefreshTokenTrait;

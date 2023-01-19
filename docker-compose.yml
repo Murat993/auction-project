@@ -19,20 +19,19 @@ services:
   frontend:
     build:
       context: frontend/docker/development/nginx
+    networks:
+      - traefik-public
+      - default
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.routers.frontend.rule=Host(`localhost`) || Host(`www.localhost`)
       - traefik.http.routers.frontend.entryPoints=http
       - traefik.http.services.frontend.loadBalancer.server.port=80
-      - traefik.http.services.frontend.loadBalancer.server.port=80
       - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.localhost/(.*)$$
       - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}localhost/$${2}
       - traefik.http.middlewares.frontend-redirect.redirectRegex.permanent=true
       - traefik.http.routers.frontend.middlewares=frontend-redirect
-    networks:
-      - traefik-public
-      - default
 
   frontend-node:
     build:
@@ -57,8 +56,12 @@ services:
       dockerfile: development/nginx/Dockerfile
     volumes:
       - ./api:/app
+    networks:
+      - traefik-public
+      - default
     labels:
       - traefik.enable=true
+      - traefik.docker.network=traefik-public
       - traefik.http.routers.api.rule=Host(`api.localhost`)
       - traefik.http.routers.api.entryPoints=http
       - traefik.http.services.api.loadBalancer.server.port=80
@@ -77,15 +80,16 @@ services:
       DB_NAME: app
       MAILER_HOST: mailer
       MAILER_PORT: 1025
-      MAILER_USER: app
+      MAILER_USERNAME: app
       MAILER_PASSWORD_FILE: /run/secrets/api_mailer_password
-      MAILER_ENCRYPTION: tcp
       MAILER_FROM_EMAIL: mail@app.test
       FRONTEND_URL: http://localhost
       SENTRY_DSN_FILE: /run/secrets/sentry_dsn
       JWT_ENCRYPTION_KEY_FILE: /run/secrets/jwt_encryption_key
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    volumes:
+      - ./api:/app
     secrets:
       - api_db_password
       - api_mailer_password
@@ -93,8 +97,6 @@ services:
       - jwt_encryption_key
       - jwt_public_key
       - jwt_private_key
-    volumes:
-      - ./api:/app
 
   api-php-cli:
     build:
@@ -109,15 +111,16 @@ services:
       DB_NAME: app
       MAILER_HOST: mailer
       MAILER_PORT: 1025
-      MAILER_USER: app
+      MAILER_USERNAME: app
       MAILER_PASSWORD_FILE: /run/secrets/api_mailer_password
-      MAILER_ENCRYPTION: tcp
       MAILER_FROM_EMAIL: mail@app.test
       FRONTEND_URL: http://localhost
       SENTRY_DSN_FILE: /run/secrets/sentry_dsn
       JWT_ENCRYPTION_KEY_FILE: /run/secrets/jwt_encryption_key
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    volumes:
+      - ./api:/app
     secrets:
       - api_db_password
       - api_mailer_password
@@ -125,8 +128,6 @@ services:
       - jwt_encryption_key
       - jwt_public_key
       - jwt_private_key
-    volumes:
-      - ./api:/app
 
   api-postgres:
     image: postgres:13.3-alpine

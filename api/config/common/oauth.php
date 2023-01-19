@@ -13,6 +13,7 @@ use App\OAuth\Entity\RefreshTokenRepository;
 use App\OAuth\Entity\Scope;
 use App\OAuth\Entity\ScopeRepository;
 use App\OAuth\Entity\UserRepository;
+use App\OAuth\Generator\AccessTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
@@ -26,7 +27,6 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface;
-use App\OAuth\Generator\AccessTokenGenerator;
 use function App\env;
 
 return [
@@ -164,12 +164,12 @@ return [
                     'redirect_uri' => env('FRONTEND_URL') . '/oauth',
                 ],
             ],
+            'encryption_key' => env('JWT_ENCRYPTION_KEY'),
+            'public_key_path' => env('JWT_PUBLIC_KEY_PATH'),
+            'private_key_path' => env('JWT_PRIVATE_KEY_PATH'),
+            'auth_code_interval' => 'PT1M',
+            'access_token_interval' => 'PT10M',
+            'refresh_token_interval' => 'P7D',
         ],
-        'encryption_key' => env('JWT_ENCRYPTION_KEY'),
-        'public_key_path' => env('JWT_PUBLIC_KEY_PATH'),
-        'private_key_path' => env('JWT_PRIVATE_KEY_PATH'),
-        'auth_code_interval' => 'PT1M',
-        'access_token_interval' => 'PT10M',
-        'refresh_token_interval' => 'P7D',
     ],
 ];
