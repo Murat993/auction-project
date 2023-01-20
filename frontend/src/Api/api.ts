@@ -1,6 +1,10 @@
 import isJsonResponse from './isJsonResponse'
 
-function request(url, method, data, headers) {
+type Method = 'GET' | 'POST'
+type Data = object
+type Headers = Record<string, string>
+
+function request(url: string, method: Method, data: Data | null, headers: Headers) {
   const common = {
     method,
     headers: {
@@ -24,7 +28,7 @@ function request(url, method, data, headers) {
     ...body,
     headers: {
       ...common.headers,
-      ...body.headers,
+      ...(body.headers as Headers),
     },
   })
     .then((response) => {
@@ -35,12 +39,16 @@ function request(url, method, data, headers) {
     })
     .then((response) => {
       if (isJsonResponse(response)) {
-        return response.text()
+        return response.json()
       }
+      return response.text()
     })
 }
 
 const api = {
-  get: (url, headers = {}) => request(url, 'GET', null, headers),
-  post: (url, data = null, headers = {}) => request(url, 'POST', data, headers),
+  get: (url: string, headers: Headers = {}) => request(url, 'GET', null, headers),
+  post: (url: string, data: Data | null = null, headers: Headers = {}) =>
+    request(url, 'POST', data, headers),
 }
+
+export default api
