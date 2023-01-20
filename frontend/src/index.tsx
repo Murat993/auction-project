@@ -13,7 +13,7 @@ const cookieFeatures = (cookies.features || '')
 
 const features = mergeFeatures(defaultFeatures, cookieFeatures)
 
-const root = createRoot(document.getElementById('root'))
+const root = createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <App features={features} />
