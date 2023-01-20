@@ -1,22 +1,14 @@
-import isJsonResponse from './isJsonResponse'
-
-async function parseError(error: Error | Response) {
+async function parseErrors(error: Error | Response) {
   if (error instanceof Error) {
-    return error.message
+    return {}
   }
 
   if (error.status === 422) {
-    return null
-  }
-
-  if (isJsonResponse(error)) {
     const data = await error.json()
-    if (data.message) {
-      return data.message
-    }
+    return data.errors
   }
 
-  return error.statusText
+  return {}
 }
 
-export default parseError
+export default parseErrors

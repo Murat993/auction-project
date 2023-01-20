@@ -16,11 +16,11 @@ function request(url: string, method: Method, data: Data | null, headers: Header
   const body =
     data !== null
       ? {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
       : { headers: {} }
 
   return fetch('/api' + url, {

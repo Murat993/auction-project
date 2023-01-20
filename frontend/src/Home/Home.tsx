@@ -3,7 +3,7 @@ import styles from './Home.module.css'
 import System from '../Layout/System'
 import { Link } from 'react-router-dom'
 import FeatureFlag from '../FeatureToggle'
-import { useAuth } from '../OAuth'
+import { useAuth } from '../OAuth/Provider'
 
 function Home(): JSX.Element {
   const { isAuthenticated, login, logout } = useAuth()

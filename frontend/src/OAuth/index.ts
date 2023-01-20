@@ -1,1 +1,1 @@
-export { default } from './Provider/OAuth'
+export { default } from './OAuth'

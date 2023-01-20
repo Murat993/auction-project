@@ -1,8 +1,8 @@
 import React from 'react'
-import System from '../../Layout/System'
+import System from '../Layout/System'
 import { Link } from 'react-router-dom'
-import { AlertError } from '../../Alert'
-import useAuth from './useAuth'
+import { AlertError } from '../Alert'
+import useAuth from './Provider/useAuth'
 
 function OAuth(): JSX.Element {
   const { error, loading } = useAuth()

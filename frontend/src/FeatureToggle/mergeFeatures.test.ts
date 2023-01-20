@@ -13,6 +13,7 @@ test('merges features structs and arrays', () => {
 
   const features3 = {
     fourth: true,
+    fifth: false,
   }
 
   const features = mergeFeatures(features1, features2, features3)
