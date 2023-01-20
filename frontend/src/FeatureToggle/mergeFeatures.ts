@@ -1,4 +1,9 @@
-function transform(features) {
+type FeaturesHash = Record<string, boolean>
+type FeaturesArray = string[]
+
+type Features = FeaturesHash | FeaturesArray
+
+function transform(features: Features): FeaturesHash {
   if (!Array.isArray(features)) {
     return features
   }
@@ -13,10 +18,8 @@ function transform(features) {
   )
 }
 
-export default function mergeFeatures(...lists) {
-  const features = lists
-    .map(transform)
-    .reduce((previous, current) => ({ ...previous, ...current }))
+export default function mergeFeatures(...lists: Features[]): string[] {
+  const features = lists.map(transform).reduce((previous, current) => ({ ...previous, ...current }))
 
   return Object.entries(features)
     .filter(([, value]) => value)
