@@ -8,6 +8,8 @@ use Doctrine\Migrations;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool;
 use Psr\Container\ContainerInterface;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 
 return [
     FixturesLoadCommand::class => static function (ContainerInterface $container) {
@@ -22,6 +24,8 @@ return [
             $config['fixture_paths'],
         );
     },
+
+    DropCommand::class => static fn (ContainerInterface $container): DropCommand => new DropCommand($container->get(EntityManagerProvider::class)),
 
     'config' => [
         'console' => [
