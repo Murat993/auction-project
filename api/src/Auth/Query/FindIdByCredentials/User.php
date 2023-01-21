@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Auth\Query\FindIdByCredentials;
 
-
 final class User
 {
     public function __construct(
