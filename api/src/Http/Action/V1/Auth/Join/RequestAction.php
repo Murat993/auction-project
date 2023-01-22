@@ -11,6 +11,7 @@ use App\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RequestAction implements RequestHandlerInterface
@@ -26,6 +27,7 @@ final class RequestAction implements RequestHandlerInterface
     {
         $command = $this->denormalizer->denormalize($request->getParsedBody(), Command::class, null, [
             DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
+            AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
         ]);
 
         $this->validator->validate($command);
