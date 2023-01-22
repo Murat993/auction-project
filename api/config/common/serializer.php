@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -13,8 +14,22 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 return [
-    SerializerInterface::class => static function (): SerializerInterface {
+    SerializerInterface::class => static function (ContainerInterface $container): SerializerInterface {
+        /**
+         * @psalm-suppress MixedArrayAccess
+         * @var array{
+         *     normalizers: array<array-key, class-string<DenormalizerInterface>|class-string<NormalizerInterface>>
+         * } $config
+         */
+        $config = $container->get('config')['serializer'];
+
+        $normalizers = array_map(
+            static fn (string $name) => $container->get($name),
+            $config['normalizers']
+        );
+
         return new Serializer([
+            ...$normalizers,
             new DateTimeNormalizer(),
             new PropertyNormalizer(
                 propertyTypeExtractor: new PropertyInfoExtractor(
@@ -29,4 +44,10 @@ return [
             new JsonEncoder(),
         ]);
     },
+
+    'config' => [
+        'serializer' => [
+            'normalizers' => [],
+        ],
+    ],
 ];
