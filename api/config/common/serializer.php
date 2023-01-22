@@ -9,11 +9,16 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 return [
+    NormalizerInterface::class => DI\get(SerializerInterface::class),
+    DenormalizerInterface::class => DI\get(SerializerInterface::class),
+
     SerializerInterface::class => static function (ContainerInterface $container): SerializerInterface {
         /**
          * @psalm-suppress MixedArrayAccess
