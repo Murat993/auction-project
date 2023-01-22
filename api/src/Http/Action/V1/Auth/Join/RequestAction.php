@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RequestAction implements RequestHandlerInterface
@@ -27,18 +28,20 @@ final class RequestAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            /** @var Command $command */
-            $command = $this->denormalizer->denormalize($request->getParsedBody(), Command::class);
-        } catch (NotNormalizableValueException $exception) {
-            return new JsonResponse([
-                'errors' => [
-                    (string)$exception->getPath() => sprintf(
-                        'The type must be one of "%s" ("%s" given).',
-                        implode(', ', (array)$exception->getExpectedTypes()),
-                        (string)$exception->getCurrentType()
-                    ),
-                ],
-            ], 422);
+            $command = $this->denormalizer->denormalize($request->getParsedBody(), Command::class, null, [
+                DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
+            ]);
+        } catch (PartialDenormalizationException $exception) {
+            $errors = [];
+            /** @var NotNormalizableValueException $error */
+            foreach ($exception->getErrors() as $error) {
+                $errors[(string)$error->getPath()] = sprintf(
+                    'The type must be one of "%s" ("%s" given).',
+                    implode(', ', (array)$error->getExpectedTypes()),
+                    (string)$error->getCurrentType()
+                );
+            }
+            return new JsonResponse(['errors' => $errors], 422);
         }
 
         $this->validator->validate($command);
